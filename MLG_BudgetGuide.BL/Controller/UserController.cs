@@ -8,7 +8,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 namespace MLG_BudgetGuide.BL.Controller
 {
     [Serializable]
-    class UserController : BasedController
+    public class UserController : BasedController
     {
         /// <summary>
         /// Пользователь.

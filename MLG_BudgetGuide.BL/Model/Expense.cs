@@ -11,6 +11,8 @@ namespace MLG_BudgetGuide.BL.Model
         /// </summary>
         public long TotalExpense { get; set; } = 0;
 
+        //public uint DailyExpense { get; set; } = 0;
+
         public Expense()
         {
 

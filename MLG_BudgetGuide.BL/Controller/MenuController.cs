@@ -33,7 +33,7 @@ namespace MLG_BudgetGuide.BL.Controller
             var incomeController = new IncomeController(userController.CurrentUser);
             var expenseController = new ExpenseController(userController.CurrentUser);
 
-            SecondaryMainMenu(userController.CurrentUser, incomeController, expenseController);
+            SecondaryMainMenu(userController.CurrentUser, incomeController, expenseController, userController);
 
 
             Console.WriteLine(userController.CurrentUser.Name);
@@ -41,7 +41,7 @@ namespace MLG_BudgetGuide.BL.Controller
 
         }
 
-        public void SecondaryMainMenu(User currentUser, IncomeController incomeController, ExpenseController expenseController)
+        public void SecondaryMainMenu(User currentUser, IncomeController incomeController, ExpenseController expenseController, UserController userController)
         {
             var flag = true;
             while(flag)
@@ -60,11 +60,63 @@ namespace MLG_BudgetGuide.BL.Controller
                 switch (input)
                 {
                     case 1:
+                        Console.Clear();
                         TotalIncomeExpense(currentUser, incomeController, expenseController);
+                        userController.Save();
+                        break;
+
+                    case 2:
+                        Console.Clear();
+                        expenseController.GetEveryDayExpense();
+                        userController.Save();
+                        break;
+
+                    case 3:
+                        Console.Clear();
+                        int income;
+                        while(true)
+                        {
+                            Console.WriteLine("Введите размер дохода.");
+                            if(int.TryParse(Console.ReadLine(), out int resultIncome))
+                            {
+                                income = resultIncome;
+                                break;
+                            }
+                            else
+                            {
+                                Console.WriteLine("Некорректный ввод");
+                            }
+                        }
+                        incomeController.AddIncome(income);
+                        userController.Save();
+                        break;
+
+                    case 4:
+                        Console.Clear();
+                        int expense;
+                        while (true)
+                        {
+                            Console.WriteLine("Введите размер расхода.");
+                            if (int.TryParse(Console.ReadLine(), out int resultExpense))
+                            {
+                                expense = resultExpense;
+                                break;
+                            }
+                            else
+                            {
+                                Console.WriteLine("Некорректный ввод");
+                            }
+                        }
+                        expenseController.AddExpense(expense);
+                        userController.Save();
                         break;
 
                     case 0:
                         flag = false;
+                        userController.Save();
+                        break;
+
+                    default:
                         break;
                 }
             }
@@ -74,9 +126,9 @@ namespace MLG_BudgetGuide.BL.Controller
         {
             Console.WriteLine("Текущий пользователь - " + currentUser.Name);
             Console.WriteLine("1 - Сводка о доходах и расходах.");
-            Console.WriteLine("");
-            Console.WriteLine("");
-            Console.WriteLine("");
+            Console.WriteLine("2 - Рассчитать ежедневные расходы.");
+            Console.WriteLine("3 - Ввести доход.");
+            Console.WriteLine("4 - Ввести расход.");
             Console.WriteLine("");
             Console.WriteLine("");
             Console.WriteLine("0 - Выход.");
@@ -89,7 +141,6 @@ namespace MLG_BudgetGuide.BL.Controller
             Console.WriteLine($"Суммарных расход за все время - {currentUser.Expense.TotalExpense}");
             Console.WriteLine($"Средний ежемесячный доход - {incomeController.GetAverageMonthlyIncome()}");
             Console.WriteLine($"Средний ежемесячный расход - {expenseController.GetAverageMonthlyExpense()}");
-
             Console.WriteLine("Нажмите \"Enter\" чтобы выйти в меню.");
             Console.ReadLine();
         }

@@ -16,6 +16,7 @@ namespace MLG_BudgetGuide.BL.Model
 
         public Expense Expense { get; }
 
+
         /// <summary>
         /// Дата регистрации пользователя.
         /// </summary>

@@ -5,7 +5,7 @@ using System;
 namespace MLG_BudgetGuide.BL.Controller
 {
     [Serializable]
-    public class ExpenseController
+    public class ExpenseController : BasedController
     {
         private User CurrentUser { get; set; }
 
@@ -29,7 +29,7 @@ namespace MLG_BudgetGuide.BL.Controller
                 throw new ArgumentException("Расход не может быть меньше, либо равен 0.", nameof(expense));
             }
 
-            CurrentUser.Income.TotalIncome += expense;
+            CurrentUser.Expense.TotalExpense += expense; 
         }
 
         /// <summary>
@@ -38,9 +38,50 @@ namespace MLG_BudgetGuide.BL.Controller
         /// <returns></returns>
         public long GetAverageMonthlyExpense()
         {
-            var currentDate = DateTime.Now;
-            TimeSpan span = currentDate - CurrentUser.RegistrationDate;
-            return (long)Math.Abs(CurrentUser.Expense.TotalExpense / (span.TotalDays * 30));
+            return GetAverageMonthlyResult(CurrentUser, CurrentUser.Expense.TotalExpense);
+        }
+
+        /// <summary>
+        /// Распределение расходов на каждый день.
+        /// </summary>
+        public void GetEveryDayExpense()
+        {
+            var flag = true;
+            while (flag)
+            {
+                Console.WriteLine("Введите сумму, которую нужно распределить.");
+                int sum;
+                if (int.TryParse(Console.ReadLine(), out int result))
+                {
+                    sum = result;
+                }
+                else
+                {
+                    Console.WriteLine("Некорректный ввод. Нажмите \"Enter\" чтобы выйти в меню.");
+                    Console.ReadLine();
+                    break;
+                }
+
+                Console.WriteLine("Введите количество дней, на которое будет распределена сумма.");
+                int day;
+                if (int.TryParse(Console.ReadLine(), out int resultday))
+                {
+                    day = resultday;
+                }
+                else
+                {
+                    Console.WriteLine("Некорректный ввод. Нажмите \"Enter\" чтобы выйти в меню.");
+                    Console.ReadLine();
+                    break;
+                }
+                Console.Clear();
+                Console.WriteLine($"Неприкосновенный запас: {0.2 * sum} \nЕжедневные расходы:");
+                Console.WriteLine($"Затраты на питание - {0.6 * sum / day} \nОстальные траты - {0.2 * sum / day}");
+
+                Console.WriteLine("Нажмите \"Enter\" чтобы выйти в меню.");
+                Console.ReadLine();
+                flag = false;
+            }
         }
     }
 }
