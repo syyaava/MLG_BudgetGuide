@@ -49,5 +49,14 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MLG_BudgetGuide.BL\MLG_BudgetGuide.BL.csproj">
+      <Project>{25d98052-dc2f-4222-9688-7e36309eecfe}</Project>
+      <Name>MLG_BudgetGuide.BL</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

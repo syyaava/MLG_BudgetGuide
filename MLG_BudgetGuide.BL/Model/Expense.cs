@@ -3,13 +3,13 @@
 
 namespace MLG_BudgetGuide.BL.Model
 {
-    class Expense
+    [Serializable]
+    public class Expense
     {
         /// <summary>
         /// Суммарный расход.
         /// </summary>
         public long TotalExpense { get; set; } = 0;
-
 
         public Expense()
         {

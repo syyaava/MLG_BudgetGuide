@@ -3,12 +3,14 @@
 
 namespace MLG_BudgetGuide.BL.Model
 {
-    class Income
+    [Serializable]
+    public class Income
     {
         /// <summary>
         /// Суммарный доход за все время.
         /// </summary>
         public long TotalIncome { get; internal set; } = 0;
+
 
         public Income()
         {

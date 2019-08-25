@@ -3,7 +3,8 @@
 
 namespace MLG_BudgetGuide.BL.Model
 {
-    class User
+    [Serializable]
+    public class User
     {
         #region Свойства
         /// <summary>
@@ -18,7 +19,7 @@ namespace MLG_BudgetGuide.BL.Model
         /// <summary>
         /// Дата регистрации пользователя.
         /// </summary>
-        private DateTime RegistrationDate { get; set; }
+        public DateTime RegistrationDate { get; set; }
         #endregion
 
         /// <summary>

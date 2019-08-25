@@ -7,14 +7,17 @@ using System.Runtime.Serialization.Formatters.Binary;
 
 namespace MLG_BudgetGuide.BL.Controller
 {
-    class UserController
+    [Serializable]
+    class UserController : BasedController
     {
         /// <summary>
         /// Пользователь.
         /// </summary>
         public List<User> Users { get; set; }
 
-        private User CurrentUser { get; set; }
+        private string FILE_USERS_DATA = "users.dat";
+
+        public User CurrentUser { get; }
 
         /// <summary>
         /// Создание пользователя приложения.
@@ -27,6 +30,8 @@ namespace MLG_BudgetGuide.BL.Controller
                 throw new ArgumentNullException("Имя не может быть пустым", nameof(name));
             }
 
+            Users = GetUsersData();
+            
             CurrentUser = Users.SingleOrDefault(u => u.Name == name);
 
             if(CurrentUser == null)
@@ -37,40 +42,22 @@ namespace MLG_BudgetGuide.BL.Controller
             }
         }
 
-
+        /// <summary>
+        /// Загрузить список пользователей.
+        /// </summary>
+        /// <returns>Список пользователей.</returns>
+        private List<User> GetUsersData()
+        {
+            return LoadData<User>(FILE_USERS_DATA) ?? new List<User>();
+        }
 
         /// <summary>
         /// Сохранить данные пользователя.
         /// </summary>
         public void Save()
         {
-            var formatter = new BinaryFormatter();
-
-            using (var fs = new FileStream("users.dat", FileMode.OpenOrCreate))
-            {
-                formatter.Serialize(fs, Users);
-            }
+            SaveData(FILE_USERS_DATA, Users);
         }
 
-        /// <summary>
-        /// Загрузить данные пользователя.
-        /// </summary>
-        /// <returns>Пользователь.</returns>
-        public User Load()
-        {
-            var formatter = new BinaryFormatter();
-
-            using (var fs = new FileStream("users.dat", FileMode.OpenOrCreate))
-            {
-                 if(formatter.Deserialize(fs) is User user)
-                 {
-                    return user;
-                 }
-                 else
-                 {
-                    throw new FileLoadException("Не удалось загрузить данные из файла.", "users.dat");
-                 }
-            }
-        }
     }
 }

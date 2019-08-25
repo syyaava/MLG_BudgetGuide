@@ -4,7 +4,8 @@ using System;
 
 namespace MLG_BudgetGuide.BL.Controller
 {
-    class IncomeController
+    [Serializable]
+    public class IncomeController
     {
         private User CurrentUser { get; set; }
 
@@ -29,6 +30,17 @@ namespace MLG_BudgetGuide.BL.Controller
             }
 
             CurrentUser.Income.TotalIncome += income;
+        }
+
+        /// <summary>
+        /// Получить средний доход в месяц.
+        /// </summary>
+        /// <returns></returns>
+        public long GetAverageMonthlyIncome()
+        {
+            var currentDate = DateTime.Now;
+            TimeSpan span = currentDate - CurrentUser.RegistrationDate;
+            return (long)Math.Abs(CurrentUser.Income.TotalIncome / (span.TotalDays * 30));
         }
     }
 }
