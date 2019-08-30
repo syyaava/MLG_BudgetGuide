@@ -36,12 +36,16 @@ namespace MLG_BudgetGuide.BL.Controller
             SecondaryMainMenu(userController.CurrentUser, incomeController, expenseController, userController);
 
 
-            Console.WriteLine(userController.CurrentUser.Name);
+            Console.WriteLine("До свидания " + userController.CurrentUser.Name);
+            Console.WriteLine("Чтобы закрыть приложение нажмите \"Enter\".");
             Console.ReadLine();
 
         }
 
-        public void SecondaryMainMenu(User currentUser, IncomeController incomeController, ExpenseController expenseController, UserController userController)
+        public void SecondaryMainMenu(User currentUser, 
+                                      IncomeController incomeController, 
+                                      ExpenseController expenseController, 
+                                      UserController userController)
         {
             var flag = true;
             while(flag)
@@ -93,21 +97,8 @@ namespace MLG_BudgetGuide.BL.Controller
 
                     case 4:
                         Console.Clear();
-                        int expense;
-                        while (true)
-                        {
-                            Console.WriteLine("Введите размер расхода.");
-                            if (int.TryParse(Console.ReadLine(), out int resultExpense))
-                            {
-                                expense = resultExpense;
-                                break;
-                            }
-                            else
-                            {
-                                Console.WriteLine("Некорректный ввод");
-                            }
-                        }
-                        expenseController.AddExpense(expense);
+                        expenseController.OutputTypesExpense();
+                        expenseController.SetExpenseOfType();
                         userController.Save();
                         break;
 
@@ -141,6 +132,11 @@ namespace MLG_BudgetGuide.BL.Controller
             Console.WriteLine($"Суммарных расход за все время - {currentUser.Expense.TotalExpense}");
             Console.WriteLine($"Средний ежемесячный доход - {incomeController.GetAverageMonthlyIncome()}");
             Console.WriteLine($"Средний ежемесячный расход - {expenseController.GetAverageMonthlyExpense()}");
+            Console.WriteLine();
+            Console.WriteLine($"Расходы на еду - {currentUser.Expense.FoodExpense}");
+            Console.WriteLine($"Расходы на лекарства/медицину - {currentUser.Expense.MedicamentExpense}");
+            Console.WriteLine($"Расходы на досуг - {currentUser.Expense.EntertamentExpense}");
+            Console.WriteLine($"Расходы на транспорт - {currentUser.Expense.TransportExpense}");
             Console.WriteLine("Нажмите \"Enter\" чтобы выйти в меню.");
             Console.ReadLine();
         }

@@ -19,7 +19,7 @@ namespace MLG_BudgetGuide.BL.Controller
         }
 
         /// <summary>
-        /// Увеличение суммарного расхода.
+        /// Ввод величины расхода.
         /// </summary>
         /// <param name="income">Расход.</param>
         public void AddExpense(int expense)
@@ -29,7 +29,7 @@ namespace MLG_BudgetGuide.BL.Controller
                 throw new ArgumentException("Расход не может быть меньше, либо равен 0.", nameof(expense));
             }
 
-            CurrentUser.Expense.TotalExpense += expense; 
+            //TODO: ввод вида затрат.
         }
 
         /// <summary>
@@ -82,6 +82,93 @@ namespace MLG_BudgetGuide.BL.Controller
                 Console.ReadLine();
                 flag = false;
             }
+        }
+
+
+        public void SetExpenseOfType()
+        {
+            var flag = true;
+            while(flag)
+            {
+                if (int.TryParse(Console.ReadLine(), out int result))
+                {
+                    var expense = InputExpense();
+                    switch(result)
+                    {
+                        case 1:
+                            CurrentUser.Expense.FoodExpense += expense;
+                            CurrentUser.Expense.TotalExpense += expense;
+                            flag = false;
+                            break;
+
+                        case 2:
+                            CurrentUser.Expense.MedicamentExpense += expense;
+                            CurrentUser.Expense.TotalExpense += expense;
+                            flag = false;
+                            break;
+
+                        case 3:
+                            CurrentUser.Expense.EntertamentExpense += expense;
+                            CurrentUser.Expense.TotalExpense += expense;
+                            flag = false;
+                            break;
+
+                        case 4:
+                            CurrentUser.Expense.TransportExpense += expense;
+                            CurrentUser.Expense.TotalExpense += expense;
+                            flag = false;
+                            break;
+
+                        case 0:
+                            flag = false;
+                            break;
+
+                        default:
+                            break;  
+                    }
+                }
+                else
+                {
+                    Console.Clear();
+                    Console.WriteLine("Некорректный ввод. Попробуйте еще раз.\n");
+                    OutputTypesExpense();
+                }
+            }
+        }
+
+        private static int InputExpense()
+        {
+            while (true)
+            {
+                Console.WriteLine("Введите размер расхода.");
+                if (int.TryParse(Console.ReadLine(), out int expense))
+                {
+                    if(expense >= 0)
+                    {
+                        return expense;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Размер расхода не может быть меньше 0");
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Некорректный ввод. Попробуйте еще раз.");
+                }
+            }
+
+            
+        }
+
+        public void OutputTypesExpense()
+        {
+            Console.WriteLine("Выберите к какому типу относятся ваши расходы:");
+            Console.WriteLine("0 - Отмена.");
+            Console.WriteLine("1 - Расходы на еду.");
+            Console.WriteLine("2 - Расходы на лекарства/медицину.");
+            Console.WriteLine("3 - Расходы на досуг.");
+            Console.WriteLine("4 - Расходы на транспорт.");
         }
     }
 }
