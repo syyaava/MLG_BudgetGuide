@@ -1,6 +1,6 @@
 ﻿using MLG_BudgetGuide.BL.Model;
 using System;
-
+using System.Linq;
 
 namespace MLG_BudgetGuide.BL.Controller
 {
@@ -30,6 +30,7 @@ namespace MLG_BudgetGuide.BL.Controller
             }
 
             CurrentUser.Income.TotalIncome += income;
+            CurrentUser.Income.CurrentMonthIncome += income;
 
         }
 

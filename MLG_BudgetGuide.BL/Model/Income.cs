@@ -11,6 +11,7 @@ namespace MLG_BudgetGuide.BL.Model
         /// </summary>
         public long TotalIncome { get; internal set; } = 0;
 
+        public long CurrentMonthIncome { get; set; } = 0;
 
         public Income()
         {

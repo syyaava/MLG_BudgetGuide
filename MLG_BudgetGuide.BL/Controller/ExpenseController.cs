@@ -1,6 +1,6 @@
 ﻿using MLG_BudgetGuide.BL.Model;
 using System;
-
+using System.Linq;
 
 namespace MLG_BudgetGuide.BL.Controller
 {
@@ -84,39 +84,54 @@ namespace MLG_BudgetGuide.BL.Controller
             }
         }
 
-
+        /// <summary>
+        /// Ввод расходов по типам.
+        /// </summary>
         public void SetExpenseOfType()
         {
             var flag = true;
             while(flag)
             {
+                Console.Clear();
                 if (int.TryParse(Console.ReadLine(), out int result))
                 {
                     var expense = InputExpense();
                     switch(result)
                     {
                         case 1:
+                            CurrentUser.Expense.CurrentMonthExpenses += expense;
                             CurrentUser.Expense.FoodExpense += expense;
                             CurrentUser.Expense.TotalExpense += expense;
-                            flag = false;
                             break;
 
                         case 2:
+                            CurrentUser.Expense.CurrentMonthExpenses += expense;
                             CurrentUser.Expense.MedicamentExpense += expense;
                             CurrentUser.Expense.TotalExpense += expense;
-                            flag = false;
                             break;
 
                         case 3:
+                            CurrentUser.Expense.CurrentMonthExpenses += expense;
                             CurrentUser.Expense.EntertamentExpense += expense;
                             CurrentUser.Expense.TotalExpense += expense;
-                            flag = false;
                             break;
 
                         case 4:
+                            CurrentUser.Expense.CurrentMonthExpenses += expense;
                             CurrentUser.Expense.TransportExpense += expense;
                             CurrentUser.Expense.TotalExpense += expense;
-                            flag = false;
+                            break;
+
+                        case 5:
+                            CurrentUser.Expense.CurrentMonthExpenses += expense;
+                            CurrentUser.Expense.CreditExpense += expense;
+                            CurrentUser.Expense.TotalExpense += expense;
+                            break;
+
+                        case 6:
+                            CurrentUser.Expense.CurrentMonthExpenses += expense;
+                            CurrentUser.Expense.OtherExpense += expense;
+                            CurrentUser.Expense.TotalExpense += expense;
                             break;
 
                         case 0:
@@ -164,11 +179,14 @@ namespace MLG_BudgetGuide.BL.Controller
         public void OutputTypesExpense()
         {
             Console.WriteLine("Выберите к какому типу относятся ваши расходы:");
-            Console.WriteLine("0 - Отмена.");
+            Console.WriteLine("0 - Выход.");
             Console.WriteLine("1 - Расходы на еду.");
             Console.WriteLine("2 - Расходы на лекарства/медицину.");
             Console.WriteLine("3 - Расходы на досуг.");
             Console.WriteLine("4 - Расходы на транспорт.");
+            Console.WriteLine("5 - Расходы на кредит.");
+            Console.WriteLine("6 - Расходы на остальное.");
         }
+
     }
 }

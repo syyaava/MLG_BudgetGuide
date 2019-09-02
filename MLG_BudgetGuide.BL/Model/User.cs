@@ -1,5 +1,5 @@
 ﻿using System;
-
+using System.Collections.Generic;
 
 namespace MLG_BudgetGuide.BL.Model
 {
@@ -12,15 +12,23 @@ namespace MLG_BudgetGuide.BL.Model
         /// </summary>
         public string Name { get; }
 
+        /// <summary>
+        /// Доходы.
+        /// </summary>
         public Income Income { get; }
 
+        /// <summary>
+        /// Расходы.
+        /// </summary>
         public Expense Expense { get; }
-
 
         /// <summary>
         /// Дата регистрации пользователя.
         /// </summary>
         public DateTime RegistrationDate { get; set; }
+
+
+        public List<DateTime> Months { get; set; }
         #endregion
 
         /// <summary>
@@ -37,6 +45,7 @@ namespace MLG_BudgetGuide.BL.Model
             Expense = new Expense();
             Income = new Income();
             RegistrationDate = DateTime.Now;
+            Months = new List<DateTime>();
         }
 
         public override string ToString()

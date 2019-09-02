@@ -12,6 +12,11 @@ namespace MLG_BudgetGuide.BL.Model
         public long TotalExpense { get; set; } = 0;
 
         /// <summary>
+        /// Расходы за текущий месяц.
+        /// </summary>
+        public long CurrentMonthExpenses { get; set; } = 0;
+
+        /// <summary>
         /// Расходы на еду.
         /// </summary>
         public long FoodExpense { get; set; } = 0;
@@ -31,8 +36,16 @@ namespace MLG_BudgetGuide.BL.Model
         /// </summary>
         public long TransportExpense { get; set; } = 0;
 
+        /// <summary>
+        /// Расходы на кредит.
+        /// </summary>
+        public long CreditExpense { get; set; } = 0;
 
-        //public uint DailyExpense { get; set; } = 0;
+        /// <summary>
+        /// Расходы на остальное.
+        /// </summary>
+        public long OtherExpense { get; set; } = 0;
+
 
         public Expense()
         {

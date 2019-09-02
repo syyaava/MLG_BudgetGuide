@@ -1,6 +1,6 @@
 ﻿using MLG_BudgetGuide.BL.Model;
 using System;
-
+using System.Linq;
 
 namespace MLG_BudgetGuide.BL.Controller
 {
@@ -50,6 +50,7 @@ namespace MLG_BudgetGuide.BL.Controller
             var flag = true;
             while(flag)
             {
+                ResetMonthlyExpenseAndIncome(currentUser);
                 Console.Clear();
                 ListCommands(currentUser);
                 int input;
@@ -132,13 +133,38 @@ namespace MLG_BudgetGuide.BL.Controller
             Console.WriteLine($"Суммарных расход за все время - {currentUser.Expense.TotalExpense}");
             Console.WriteLine($"Средний ежемесячный доход - {incomeController.GetAverageMonthlyIncome()}");
             Console.WriteLine($"Средний ежемесячный расход - {expenseController.GetAverageMonthlyExpense()}");
+            Console.WriteLine($"Остаток от дохода за этот месяц - {currentUser.Income.CurrentMonthIncome - currentUser.Expense.CurrentMonthExpenses}");
             Console.WriteLine();
             Console.WriteLine($"Расходы на еду - {currentUser.Expense.FoodExpense}");
             Console.WriteLine($"Расходы на лекарства/медицину - {currentUser.Expense.MedicamentExpense}");
             Console.WriteLine($"Расходы на досуг - {currentUser.Expense.EntertamentExpense}");
             Console.WriteLine($"Расходы на транспорт - {currentUser.Expense.TransportExpense}");
+            Console.WriteLine($"Расходы на кредит - {currentUser.Expense.CreditExpense}");
+            Console.WriteLine($"Расходы на остальное - {currentUser.Expense.OtherExpense}");
             Console.WriteLine("Нажмите \"Enter\" чтобы выйти в меню.");
             Console.ReadLine();
+        }
+
+
+        //Очень кривая реализация.
+        /// <summary>
+        /// Обнуление ежемесячных дохода и расхода при смене месяца.
+        /// </summary>
+        public void ResetMonthlyExpenseAndIncome(User currentUser)
+        {
+            if (currentUser.Months.Count != 0)
+            {
+                if (currentUser.Months.Last().Month != DateTime.Now.Month && currentUser.Months.Last().Year != DateTime.Now.Year)
+                {
+                    currentUser.Months.Add(DateTime.Now);
+                    currentUser.Income.CurrentMonthIncome = 0;
+                    currentUser.Expense.CurrentMonthExpenses = 0;
+                }
+            }
+            else
+            {
+                currentUser.Months.Add(DateTime.Now);
+            }
         }
     }
 }

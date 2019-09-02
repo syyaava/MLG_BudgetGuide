@@ -64,7 +64,7 @@ namespace MLG_BudgetGuide.BL.Controller
             }
             else
             {
-                return (long)(amount / Math.Round(span.TotalDays));
+                return (long)(amount / Math.Round(span.TotalDays) * 30);
             }
         }
     }
