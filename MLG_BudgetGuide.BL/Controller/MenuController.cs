@@ -98,7 +98,6 @@ namespace MLG_BudgetGuide.BL.Controller
 
                     case 4:
                         Console.Clear();
-                        expenseController.OutputTypesExpense();
                         expenseController.SetExpenseOfType();
                         userController.Save();
                         break;

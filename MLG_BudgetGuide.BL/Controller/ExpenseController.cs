@@ -93,6 +93,7 @@ namespace MLG_BudgetGuide.BL.Controller
             while(flag)
             {
                 Console.Clear();
+                OutputTypesExpense();
                 if (int.TryParse(Console.ReadLine(), out int result))
                 {
                     var expense = InputExpense();
