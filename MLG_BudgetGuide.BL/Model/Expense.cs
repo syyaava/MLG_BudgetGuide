@@ -25,6 +25,16 @@ namespace MLG_BudgetGuide.BL.Model
         public Expense()
         {
             TypesExpense = new List<TypeOfExpense>();
+            DefaultTypes();
+        }
+
+        private void DefaultTypes()
+        {
+            TypesExpense.Add(new TypeOfExpense("Продукты питания"));
+            TypesExpense.Add(new TypeOfExpense("Транспорт"));
+            TypesExpense.Add(new TypeOfExpense("Коммунальные платежи"));
+            TypesExpense.Add(new TypeOfExpense("Кредит"));
+            TypesExpense.Add(new TypeOfExpense("Досуг"));
         }
 
         public override string ToString()
