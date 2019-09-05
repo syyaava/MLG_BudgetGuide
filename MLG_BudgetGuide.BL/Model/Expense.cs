@@ -1,5 +1,5 @@
 ﻿using System;
-
+using System.Collections.Generic;
 
 namespace MLG_BudgetGuide.BL.Model
 {
@@ -11,45 +11,20 @@ namespace MLG_BudgetGuide.BL.Model
         /// </summary>
         public long TotalExpense { get; set; } = 0;
 
+
+        /// <summary>
+        /// Список типов расходов.
+        /// </summary>
+        public List<TypeOfExpense> TypesExpense { get; }
+
         /// <summary>
         /// Расходы за текущий месяц.
         /// </summary>
         public long CurrentMonthExpenses { get; set; } = 0;
 
-        /// <summary>
-        /// Расходы на еду.
-        /// </summary>
-        public long FoodExpense { get; set; } = 0;
-
-        /// <summary>
-        /// Расходы на медицину.
-        /// </summary>
-        public long MedicamentExpense { get; set; } = 0;
-
-        /// <summary>
-        /// Расходы на досуг.
-        /// </summary>
-        public long EntertamentExpense { get; set; } = 0;
-
-        /// <summary>
-        /// Расходы на транспорт.
-        /// </summary>
-        public long TransportExpense { get; set; } = 0;
-
-        /// <summary>
-        /// Расходы на кредит.
-        /// </summary>
-        public long CreditExpense { get; set; } = 0;
-
-        /// <summary>
-        /// Расходы на остальное.
-        /// </summary>
-        public long OtherExpense { get; set; } = 0;
-
-
         public Expense()
         {
-
+            TypesExpense = new List<TypeOfExpense>();
         }
 
         public override string ToString()

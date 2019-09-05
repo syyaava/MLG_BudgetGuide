@@ -98,7 +98,7 @@ namespace MLG_BudgetGuide.BL.Controller
 
                     case 4:
                         Console.Clear();
-                        expenseController.SetExpenseOfType();
+                        expenseController.SetExpenseOfType(userController);
                         userController.Save();
                         break;
 
@@ -134,12 +134,10 @@ namespace MLG_BudgetGuide.BL.Controller
             Console.WriteLine($"Средний ежемесячный расход - {expenseController.GetAverageMonthlyExpense()}");
             Console.WriteLine($"Остаток от дохода за этот месяц - {currentUser.Income.CurrentMonthIncome - currentUser.Expense.CurrentMonthExpenses}");
             Console.WriteLine();
-            Console.WriteLine($"Расходы на еду - {currentUser.Expense.FoodExpense}");
-            Console.WriteLine($"Расходы на лекарства/медицину - {currentUser.Expense.MedicamentExpense}");
-            Console.WriteLine($"Расходы на досуг - {currentUser.Expense.EntertamentExpense}");
-            Console.WriteLine($"Расходы на транспорт - {currentUser.Expense.TransportExpense}");
-            Console.WriteLine($"Расходы на кредит - {currentUser.Expense.CreditExpense}");
-            Console.WriteLine($"Расходы на остальное - {currentUser.Expense.OtherExpense}");
+            for(var i = 0; i < currentUser.Expense.TypesExpense.Count; i++)
+            {
+                Console.WriteLine($"Расходы типа \"{currentUser.Expense.TypesExpense[i]}\" - {currentUser.Expense.TypesExpense[i].ExpensesAmount}");
+            }
             Console.WriteLine("Нажмите \"Enter\" чтобы выйти в меню.");
             Console.ReadLine();
         }

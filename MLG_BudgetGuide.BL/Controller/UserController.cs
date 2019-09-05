@@ -58,6 +58,5 @@ namespace MLG_BudgetGuide.BL.Controller
         {
             SaveData(FILE_USERS_DATA, Users);
         }
-
     }
 }
