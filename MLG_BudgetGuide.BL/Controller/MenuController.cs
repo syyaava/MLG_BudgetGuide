@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace MLG_BudgetGuide.BL.Controller
 {
-    public class MenuController
+    public class MenuController : BasedController
     {
         public MenuController()
         {
@@ -78,21 +78,7 @@ namespace MLG_BudgetGuide.BL.Controller
 
                     case 3:
                         Console.Clear();
-                        int income;
-                        while(true)
-                        {
-                            Console.WriteLine("Введите размер дохода.");
-                            if(int.TryParse(Console.ReadLine(), out int resultIncome))
-                            {
-                                income = resultIncome;
-                                break;
-                            }
-                            else
-                            {
-                                Console.WriteLine("Некорректный ввод");
-                            }
-                        }
-                        incomeController.AddIncome(income);
+                        AddIncome(incomeController);
                         userController.Save();
                         break;
 
@@ -100,6 +86,14 @@ namespace MLG_BudgetGuide.BL.Controller
                         Console.Clear();
                         expenseController.SetExpenseOfType(userController);
                         userController.Save();
+                        break;
+
+                    case 5:
+                        OutputExpenseHistory(currentUser);
+                        break;
+
+                    case 6:
+                        OutputIncomeHistory(currentUser);
                         break;
 
                     case 0:
@@ -113,6 +107,43 @@ namespace MLG_BudgetGuide.BL.Controller
             }
         }
 
+        /// <summary>
+        /// Вывод истории расходов.
+        /// </summary>
+        /// <param name="currentUser"></param>
+        private void OutputExpenseHistory(User currentUser)
+        {
+            OutputHistory(currentUser.Expense.History, "Расходы");
+        }
+
+        /// <summary>
+        /// Вывод истории доходов.
+        /// </summary>
+        /// <param name="currentUser"></param>
+        private void OutputIncomeHistory(User currentUser)
+        {
+            OutputHistory(currentUser.Income.History, "Доходы");
+        }
+
+        private void AddIncome(IncomeController incomeController)
+        {
+            int income;
+            while (true)
+            {
+                Console.WriteLine("Введите размер дохода.");
+                if (int.TryParse(Console.ReadLine(), out int resultIncome))
+                {
+                    income = resultIncome;
+                    break;
+                }
+                else
+                {
+                    Console.WriteLine("Некорректный ввод");
+                }
+            }
+            incomeController.AddIncome(income);
+        }
+
         public void ListCommands(User currentUser)
         {
             Console.WriteLine("Текущий пользователь - " + currentUser.Name);
@@ -120,6 +151,8 @@ namespace MLG_BudgetGuide.BL.Controller
             Console.WriteLine("2 - Рассчитать ежедневные расходы.");
             Console.WriteLine("3 - Ввести доход.");
             Console.WriteLine("4 - Ввести расход.");
+            Console.WriteLine("5 - История расходов.");
+            Console.WriteLine("6 - История доходов.");
             Console.WriteLine("");
             Console.WriteLine("");
             Console.WriteLine("0 - Выход.");

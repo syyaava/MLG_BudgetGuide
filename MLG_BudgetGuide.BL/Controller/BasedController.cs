@@ -67,5 +67,53 @@ namespace MLG_BudgetGuide.BL.Controller
                 return (long)(amount / Math.Round(span.TotalDays) * 30);
             }
         }
+
+        /// <summary>
+        /// Вывод истории доходов/расходов.
+        /// </summary>
+        /// <param name="currentUser">Текущий пользователь.</param>
+        /// <param name="text"></param>
+        protected void OutputHistory(List<Note> history, string text)
+        {
+            Console.Clear();
+            if (history.Count == 0)
+            {
+                Console.WriteLine("История пуста.");
+            }
+            else
+            {
+                foreach (var note in history)
+                {
+                    Console.WriteLine(text + " за " + note.ToString());
+                }
+            }
+            Console.WriteLine("Нажмите \"Enter\" чтобы выйти в меню.");
+            Console.ReadLine();
+        }
+
+        /// <summary>
+        /// Добавление элемента в историю.
+        /// </summary>
+        /// <param name="expense"></param>
+        protected void AddInHistory(List<Note> history, long amount)
+        {
+            var flag = false;
+            var today = DateTime.Now;
+            foreach (var day in history)
+            {
+                if (day.Date.Day == today.Day && day.Date.Month == today.Month && day.Date.Year == today.Year)
+                {
+                    day.Amount += amount;
+                    flag = true;
+                    break;
+                }
+            }
+
+            if (!flag)
+            {
+                history.Add(new Note(today, amount));
+            }
+        }
+
     }
 }

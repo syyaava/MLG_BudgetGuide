@@ -11,6 +11,10 @@ namespace MLG_BudgetGuide.BL.Model
         /// </summary>
         public long TotalExpense { get; set; } = 0;
 
+        /// <summary>
+        /// История расходов.
+        /// </summary>
+        public List<Note> History { get; }
 
         /// <summary>
         /// Список типов расходов.
@@ -26,6 +30,7 @@ namespace MLG_BudgetGuide.BL.Model
         {
             TypesExpense = new List<TypeOfExpense>();
             DefaultTypes();
+            History = new List<Note>();
         }
 
         private void DefaultTypes()

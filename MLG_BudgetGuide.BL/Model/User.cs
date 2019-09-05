@@ -27,8 +27,6 @@ namespace MLG_BudgetGuide.BL.Model
         /// </summary>
         public DateTime RegistrationDate { get; set; }
 
-        
-
         public List<DateTime> Months { get; set; }
         #endregion
 

@@ -48,6 +48,7 @@
     <Compile Include="Controller\UserController.cs" />
     <Compile Include="Model\Expense.cs" />
     <Compile Include="Model\Income.cs" />
+    <Compile Include="Model\Note.cs" />
     <Compile Include="Model\TypeOfExpense.cs" />
     <Compile Include="Model\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

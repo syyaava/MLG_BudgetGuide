@@ -78,9 +78,17 @@ namespace MLG_BudgetGuide.BL.Controller
         public void SetExpenseOfType(UserController userController)
         {
             var flag = true;
+            var good = false;
             while(flag)
             {
                 Console.Clear();
+
+                if(good)
+                {
+                    Console.WriteLine("Расходы успешно добавлены.");
+                }
+
+                good = false;
                 OutputTypesExpense();
                 if (int.TryParse(Console.ReadLine(), out int result))
                 {
@@ -101,11 +109,8 @@ namespace MLG_BudgetGuide.BL.Controller
                             break;
 
                         default:
-                            expense = InputExpense();
-                            CurrentUser.Expense.CurrentMonthExpenses += expense;
-                            CurrentUser.Expense.TotalExpense += expense;
-                            CurrentUser.Expense.TypesExpense[result - 3].ExpensesAmount += expense;
-                            userController.Save();
+                            expense = AddExpense(userController, result);
+                            good = true;
                             break;
                     }
                 }
@@ -115,6 +120,17 @@ namespace MLG_BudgetGuide.BL.Controller
                     OutputTypesExpense();
                 }
             }
+        }
+
+        private int AddExpense(UserController userController, int result)
+        {
+            int expense = InputExpense();
+            CurrentUser.Expense.CurrentMonthExpenses += expense;
+            CurrentUser.Expense.TotalExpense += expense;
+            CurrentUser.Expense.TypesExpense[result - 3].ExpensesAmount += expense;
+            AddInHistoryExpense(expense);
+            userController.Save();
+            return expense;
         }
 
         /// <summary>
@@ -151,7 +167,7 @@ namespace MLG_BudgetGuide.BL.Controller
             }
         }
 
-        private static void IncorrectInput()
+        private void IncorrectInput()
         {
             Console.Clear();
             Console.WriteLine("Некорректный ввод. Попробуйте еще раз.\n");
@@ -172,7 +188,6 @@ namespace MLG_BudgetGuide.BL.Controller
                 if (!string.IsNullOrWhiteSpace(name))
                 {
                     CurrentUser.Expense.TypesExpense.Add(new TypeOfExpense(name));
-                    Console.WriteLine("Тип успешно добавлен.");
                     userController.Save();
                     break;
                 }
@@ -187,7 +202,7 @@ namespace MLG_BudgetGuide.BL.Controller
         /// Ввод размера расхода.
         /// </summary>
         /// <returns></returns>
-        private static int InputExpense()
+        private int InputExpense()
         {
             while (true)
             {
@@ -228,5 +243,13 @@ namespace MLG_BudgetGuide.BL.Controller
             
         }
 
+        /// <summary>
+        /// Добавить расход в историю.
+        /// </summary>
+        /// <param name="expense">Размер расхода.</param>
+        private void AddInHistoryExpense(long expense)
+        {
+            AddInHistory(CurrentUser.Expense.History, expense);
+        }
     }
 }

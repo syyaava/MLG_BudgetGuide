@@ -31,6 +31,7 @@ namespace MLG_BudgetGuide.BL.Controller
 
             CurrentUser.Income.TotalIncome += income;
             CurrentUser.Income.CurrentMonthIncome += income;
+            AddInHistoryIncome(income);
 
         }
 
@@ -41,6 +42,15 @@ namespace MLG_BudgetGuide.BL.Controller
         public long GetAverageMonthlyIncome()
         {
             return GetAverageMonthlyResult(CurrentUser, CurrentUser.Income.TotalIncome);
+        }
+
+        /// <summary>
+        /// Добавить доход в историю.
+        /// </summary>
+        /// <param name="income">Размер дохода.</param>
+        private void AddInHistoryIncome(long income)
+        {
+            AddInHistory(CurrentUser.Income.History, income);
         }
     }
 }
