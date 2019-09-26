@@ -125,7 +125,7 @@ namespace MLG_BudgetGuide.BL.Controller
             Console.WriteLine("Распределение ежедневных расходов на " + day + " дней:");
             foreach(var item in CurrentUser.Expense.CalculatorTypeExpense)
             {
-                Console.WriteLine($"{item.Name}: {((item.Percent/100.0) * sum) / day}");
+                Console.WriteLine($"{item.Name}({item.Percent}%): {((item.Percent/100.0) * sum) / day}");
             }
             Console.WriteLine("\n\n\nНажмите \"Enter\" чтобы продолжить.");
         }
@@ -302,7 +302,7 @@ namespace MLG_BudgetGuide.BL.Controller
                 }
                 if (int.TryParse(Console.ReadLine(), out int input))
                 {
-                    if (input < listOfExpenses.Count && input > 0)
+                    if (input <= listOfExpenses.Count && input > 0)
                     {
                         listOfExpenses.RemoveAt(input - 1);
                         break;
