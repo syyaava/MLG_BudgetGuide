@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace MLG_BudgetGuide.BL.Model
 {
@@ -7,20 +8,21 @@ namespace MLG_BudgetGuide.BL.Model
     public class User
     {
         #region Свойства
+
         /// <summary>
-        /// Имя польщователя.
+        /// Имя пользователя.
         /// </summary>
-        public string Name { get; }
+        public string Name { get; set; }
 
         /// <summary>
         /// Доходы.
         /// </summary>
-        public Income Income { get; }
+        public Income Income { get; set; }
 
         /// <summary>
         /// Расходы.
         /// </summary>
-        public Expense Expense { get; }
+        public Expense Expense { get; set; }
 
         /// <summary>
         /// Дата регистрации пользователя.
@@ -41,6 +43,14 @@ namespace MLG_BudgetGuide.BL.Model
                 throw new ArgumentNullException("Имя не может быть пустым", nameof(name));
             }
             Name = name;
+            Expense = new Expense();
+            Income = new Income();
+            RegistrationDate = DateTime.Now;
+            Months = new List<DateTime>();
+        }
+
+        public User()
+        {
             Expense = new Expense();
             Income = new Income();
             RegistrationDate = DateTime.Now;

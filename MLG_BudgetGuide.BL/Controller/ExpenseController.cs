@@ -1,5 +1,6 @@
 ﻿using MLG_BudgetGuide.BL.Model;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace MLG_BudgetGuide.BL.Controller
@@ -32,44 +33,194 @@ namespace MLG_BudgetGuide.BL.Controller
         /// <summary>
         /// Распределение расходов на каждый день.
         /// </summary>
-        public void GetEveryDayExpense()
+        public void GetEveryDayExpense(UserController userController)
         {
             var flag = true;
             while (flag)
             {
-                Console.WriteLine("Введите сумму, которую нужно распределить.");
-                int sum;
+                Console.Clear();
+                CalcTypesMenu();
+
                 if (int.TryParse(Console.ReadLine(), out int result))
                 {
-                    sum = result;
-                }
-                else
-                {
-                    Console.WriteLine("Некорректный ввод. Нажмите \"Enter\" чтобы выйти в меню.");
-                    Console.ReadLine();
-                    break;
-                }
 
-                Console.WriteLine("Введите количество дней, на которое будет распределена сумма.");
-                int day;
-                if (int.TryParse(Console.ReadLine(), out int resultday))
-                {
-                    day = resultday;
-                }
-                else
-                {
-                    Console.WriteLine("Некорректный ввод. Нажмите \"Enter\" чтобы выйти в меню.");
-                    Console.ReadLine();
-                    break;
-                }
-                Console.Clear();
-                Console.WriteLine($"Неприкосновенный запас: {0.2 * sum} \nЕжедневные расходы:");
-                Console.WriteLine($"Затраты на питание - {0.6 * sum / day} \nОстальные траты - {0.2 * sum / day}");
+                    switch (result)
+                    {
+                        case 0:
+                            flag = false;
+                            break;
 
-                Console.WriteLine("Нажмите \"Enter\" чтобы выйти в меню.");
-                Console.ReadLine();
-                flag = false;
+                        case 1:
+                            Console.Clear();
+                            Console.WriteLine("Введите сумму, которую нужно распределить.");
+                            var sum = Input();
+                            if (sum == default)
+                            {
+                                break;
+                            }
+
+                            Console.Clear();
+                            Console.WriteLine("Распределение суммы размером: " + sum);
+                            var day = CalcInputDays();
+                            if (day == default)
+                            {
+                                break;
+                            }
+
+                            CalculatedDaylyExpenses(sum, day);
+                            Console.ReadLine();
+                            break;
+
+                        case 2:
+                            ChangePercent();
+                            userController.Save();
+                            break;
+
+                        case 3:
+                            AddType(userController, CurrentUser.Expense.CalculatorTypeExpense, true);
+                            userController.Save();
+                            break;
+
+                        case 4:
+                            DeleteType(userController, CurrentUser.Expense.CalculatorTypeExpense);
+                            userController.Save();
+                            break;
+
+                        default:
+
+                            break;
+                    }
+                }
             }
+        }
+
+        /// <summary>
+        /// Показать сумму процентных соотношений.
+        /// </summary>
+        private void ShowSumPersent()
+        {
+            var percent = 0;
+            foreach(var item in CurrentUser.Expense.CalculatorTypeExpense)
+            {
+                percent += item.Percent;
+            }
+            Console.WriteLine("Сумма всех процентных долей = " + percent);
+            if(percent < 100 || percent > 100)
+            {
+                Console.WriteLine("////////////////////////////////////////////////////////////");
+                Console.WriteLine("Некорректное поведение калькулятора.\n" +
+                    "Измените процентные соотношения так, чтобы их сумма была = 100");
+                Console.WriteLine("////////////////////////////////////////////////////////////");
+            }
+        }
+
+        /// <summary>
+        /// Расчёт ежедневных расходов по типам.
+        /// </summary>
+        /// <param name="sum">Сумма для распределения.</param>
+        /// <param name="day">Количество дней на которое идет распределение.</param>
+        private void CalculatedDaylyExpenses(int sum, int day)
+        {
+            Console.Clear();
+            Console.WriteLine("Распределение ежедневных расходов на " + day + " дней:");
+            foreach(var item in CurrentUser.Expense.CalculatorTypeExpense)
+            {
+                Console.WriteLine($"{item.Name}: {((item.Percent/100.0) * sum) / day}");
+            }
+            Console.WriteLine("\n\n\nНажмите \"Enter\" чтобы продолжить.");
+        }
+
+        /// <summary>
+        /// Изменить процентное соотношение типа.
+        /// </summary>
+        private void ChangePercent()
+        {
+            while (true)
+            {
+                Console.Clear();
+                ShowSumPersent();
+                Console.WriteLine("Изменение процентного соотношения.");
+
+                Console.WriteLine("Выберите пункт для изменения");
+                Console.WriteLine("0 - Выход.");
+                for (var i = 0; i < CurrentUser.Expense.CalculatorTypeExpense.Count; i++)
+                {
+                    Console.WriteLine($"{i + 1} - {CurrentUser.Expense.CalculatorTypeExpense[i].Name}({CurrentUser.Expense.CalculatorTypeExpense[i].Percent}%).");
+                }
+
+                if (int.TryParse(Console.ReadLine(), out int result))
+                {
+                    if(result == 0)
+                    {
+                        break;
+                    }
+                    else if (result > CurrentUser.Expense.CalculatorTypeExpense.Count || result < 0)
+                    {
+                        IncorrectInputWithBackToMenu();
+                    }
+                    else
+                    {
+                        Console.WriteLine("Введите количество процентов (Пример: 20)");
+                        var percent = Input();
+
+                        CurrentUser.Expense.CalculatorTypeExpense[result - 1].Percent = percent;
+                    }
+                }
+                else
+                {
+                    IncorrectInputWithBackToMenu();
+                }
+            }
+        }
+
+        private static void IncorrectInputWithBackToMenu()
+        {
+            Console.WriteLine("Некорректный ввод. Нажмите \"Enter\" чтобы выйти в меню.");
+            Console.ReadLine();
+        }
+
+        /// <summary>
+        /// Ввод количества дней для расчета.
+        /// </summary>
+        /// <returns></returns>
+        private int CalcInputDays()
+        {
+            Console.WriteLine("Введите количество дней, на которое будет распределена сумма.");
+            if (int.TryParse(Console.ReadLine(), out int resultday))
+            {
+                Console.Clear();
+                return resultday;
+            }
+            else
+            {
+                Console.WriteLine("Некорректный ввод. Нажмите \"Enter\" чтобы выйти в меню.");
+                Console.ReadLine();
+                return default;
+            }
+        }
+
+        private int Input()
+        {
+            if (int.TryParse(Console.ReadLine(), out int result))
+            {
+                return result;
+            }
+            else
+            {
+                IncorrectInputWithBackToMenu();
+                return default;
+            }
+        }
+
+        private void CalcTypesMenu()
+        {
+            ShowSumPersent();
+            Console.WriteLine("Выберите дальнейшее действие:");
+            Console.WriteLine("0 - Выход.");
+            Console.WriteLine("1 - Рассчитать ежедневный расход.");
+            Console.WriteLine("2 - Изменить процентное соотношение типов.");
+            Console.WriteLine("3 - Добавить тип расхода.");
+            Console.WriteLine("4 - Удалить тип расхода.");
         }
 
         /// <summary>
@@ -92,8 +243,6 @@ namespace MLG_BudgetGuide.BL.Controller
                 OutputTypesExpense();
                 if (int.TryParse(Console.ReadLine(), out int result))
                 {
-                    var expense = 0;
-
                     switch(result)
                     {
                         case 0:
@@ -101,15 +250,20 @@ namespace MLG_BudgetGuide.BL.Controller
                             break;
 
                         case 1:
-                            AddType(userController);
+                            AddType(userController, CurrentUser.Expense.TypesExpense, false);
                             break;
 
                         case 2:
-                            DeleteType(userController);
+                            DeleteType(userController, CurrentUser.Expense.TypesExpense);
                             break;
 
                         default:
-                            expense = AddExpense(userController, result);
+                            if (result < 0 || result >= CurrentUser.Expense.TypesExpense.Count + 3)
+                            {
+                                IncorrectInputWithBackToMenu();
+                                break;
+                            }
+                            AddExpense(userController, result);
                             good = true;
                             break;
                     }
@@ -122,7 +276,7 @@ namespace MLG_BudgetGuide.BL.Controller
             }
         }
 
-        private int AddExpense(UserController userController, int result)
+        private void AddExpense(UserController userController, int result)
         {
             int expense = InputExpense();
             CurrentUser.Expense.CurrentMonthExpenses += expense;
@@ -130,28 +284,27 @@ namespace MLG_BudgetGuide.BL.Controller
             CurrentUser.Expense.TypesExpense[result - 3].ExpensesAmount += expense;
             AddInHistoryExpense(expense);
             userController.Save();
-            return expense;
         }
 
         /// <summary>
         /// Удалить тип.
         /// </summary>
         /// <param name="userController"></param>
-        private void DeleteType(UserController userController)
+        private void DeleteType(UserController userController, List<TypeOfExpense> listOfExpenses)
         {
             Console.Clear();
             while (true)
             {
                 Console.WriteLine("Введите номер типа, который хотите удалить:");
-                for (var i = 0; i < CurrentUser.Expense.TypesExpense.Count; i++)
+                for (var i = 0; i < listOfExpenses.Count; i++)
                 {
-                    Console.WriteLine($"{i + 1} - Расходы типа \"{CurrentUser.Expense.TypesExpense[i].Name}\"");
+                    Console.WriteLine($"{i + 1} - Расходы типа \"{listOfExpenses[i].Name}\"");
                 }
                 if (int.TryParse(Console.ReadLine(), out int input))
                 {
-                    if (input < CurrentUser.Expense.TypesExpense.Count && input > 0)
+                    if (input < listOfExpenses.Count && input > 0)
                     {
-                        CurrentUser.Expense.TypesExpense.RemoveAt(input - 1);
+                        listOfExpenses.RemoveAt(input - 1);
                         break;
                     }
                     else
@@ -174,10 +327,10 @@ namespace MLG_BudgetGuide.BL.Controller
         }
 
         /// <summary>
-        /// Добавление типа.
+        /// Добавление типа расходов.
         /// </summary>
         /// <param name="userController"></param>
-        private void AddType(UserController userController)
+        private void AddType(UserController userController, List<TypeOfExpense> listOfExpenses, bool withPersent)
         {
             while (true)
             {
@@ -187,7 +340,14 @@ namespace MLG_BudgetGuide.BL.Controller
                 Console.Clear();
                 if (!string.IsNullOrWhiteSpace(name))
                 {
-                    CurrentUser.Expense.TypesExpense.Add(new TypeOfExpense(name));
+                    if(withPersent)
+                    {
+                        listOfExpenses.Add(new TypeOfExpense(name, 0));
+                    }
+                    else
+                    {
+                        listOfExpenses.Add(new TypeOfExpense(name));
+                    }
                     userController.Save();
                     break;
                 }

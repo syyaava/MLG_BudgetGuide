@@ -31,10 +31,10 @@ namespace MLG_BudgetGuide.BL.Controller
             }
 
             Users = GetUsersData();
-            
+
             CurrentUser = Users.SingleOrDefault(u => u.Name == name);
 
-            if(CurrentUser == null)
+            if (CurrentUser == null)
             {
                 CurrentUser = new User(name);
                 Users.Add(CurrentUser);

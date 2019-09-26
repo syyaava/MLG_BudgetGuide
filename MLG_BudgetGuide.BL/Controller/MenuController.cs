@@ -17,11 +17,11 @@ namespace MLG_BudgetGuide.BL.Controller
             string name;
             while(true)
             {
-                Console.Write("Введите ваше имя: ");
+                Console.Write("Введите ваш логин: ");
                 name = Console.ReadLine();
                 if (name == null)
                 {
-                    Console.WriteLine("Имя не может быть пустым. \n Попробуйте еще раз:");
+                    Console.WriteLine("Логин не может быть пустым. \n Попробуйте еще раз:");
                 }
                 else
                 {
@@ -72,7 +72,7 @@ namespace MLG_BudgetGuide.BL.Controller
 
                     case 2:
                         Console.Clear();
-                        expenseController.GetEveryDayExpense();
+                        expenseController.GetEveryDayExpense(userController);
                         userController.Save();
                         break;
 
