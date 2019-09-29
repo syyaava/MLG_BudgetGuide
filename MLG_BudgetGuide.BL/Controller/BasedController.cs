@@ -58,7 +58,7 @@ namespace MLG_BudgetGuide.BL.Controller
         {
             var currentDate = DateTime.Now;
             TimeSpan span = currentDate - currentUser.RegistrationDate;
-            if (Math.Round(span.TotalDays) == 0)
+            if (Math.Round(span.TotalDays) == 0 || Math.Round(span.TotalDays) < 30)
             {
                 return amount;
             }

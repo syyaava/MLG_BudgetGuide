@@ -17,6 +17,9 @@ namespace MLG_BudgetGuide.BL.Model
         /// </summary>
         public List<Note> History { get; }
 
+        /// <summary>
+        /// Размер дохода за текущий месяц.
+        /// </summary>
         public long CurrentMonthIncome { get; set; } = 0;
 
         public Income()

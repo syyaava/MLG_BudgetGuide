@@ -41,6 +41,9 @@ namespace MLG_BudgetGuide.BL.Model
             History = new List<Note>();
         }
 
+        /// <summary>
+        /// Добавление стандартных типов расходов для статистики.
+        /// </summary>
         private void DefaultTypes()
         {
             TypesExpense.Add(new TypeOfExpense("Продукты питания"));
@@ -50,6 +53,9 @@ namespace MLG_BudgetGuide.BL.Model
             TypesExpense.Add(new TypeOfExpense("Досуг"));
         }
 
+        /// <summary>
+        /// Добавление стандартных типов расходов для калькулятора.
+        /// </summary>
         private void CalculatorDefaultTypes()
         {
             CalculatorTypeExpense.Add(new TypeOfExpense("Неприкосновенный запас", 20));

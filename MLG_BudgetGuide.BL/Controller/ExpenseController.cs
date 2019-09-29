@@ -8,8 +8,6 @@ namespace MLG_BudgetGuide.BL.Controller
     [Serializable]
     public class ExpenseController : BasedController
     {
-        private string FILE_USERS_DATA = "users.dat";
-
         private User CurrentUser { get; set; }
 
         public ExpenseController(User currentUser)
@@ -201,6 +199,10 @@ namespace MLG_BudgetGuide.BL.Controller
             }
         }
 
+        /// <summary>
+        /// Проверка ввода типа int.
+        /// </summary>
+        /// <returns></returns>
         private int Input()
         {
             if (int.TryParse(Console.ReadLine(), out int result))
@@ -214,6 +216,9 @@ namespace MLG_BudgetGuide.BL.Controller
             }
         }
 
+        /// <summary>
+        /// Список команд калькулятора.
+        /// </summary>
         private void CalcTypesMenu()
         {
             ShowSumPersent();
@@ -278,6 +283,11 @@ namespace MLG_BudgetGuide.BL.Controller
             }
         }
 
+        /// <summary>
+        /// Добавить расход.
+        /// </summary>
+        /// <param name="userController"></param>
+        /// <param name="result"></param>
         private void AddExpense(UserController userController, int result)
         {
             int expense = InputExpense();

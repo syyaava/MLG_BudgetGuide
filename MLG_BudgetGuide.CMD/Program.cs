@@ -10,7 +10,7 @@ namespace MLG_BudgetGuide.CMD
         static void Main(string[] args)
         {
             var menuController = new MenuController();
-            menuController.MainMenu();
+            menuController.HelloMenu();
         }
     }
 }

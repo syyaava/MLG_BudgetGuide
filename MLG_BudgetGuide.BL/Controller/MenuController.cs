@@ -11,7 +11,10 @@ namespace MLG_BudgetGuide.BL.Controller
             
         }
 
-        public void MainMenu()
+        /// <summary>
+        /// Меню выбора пользователя.
+        /// </summary>
+        public void HelloMenu()
         {
             Console.WriteLine("Добро пожаловать в помощника по управлению доходами.");
             string name;
@@ -33,7 +36,7 @@ namespace MLG_BudgetGuide.BL.Controller
             var incomeController = new IncomeController(userController.CurrentUser);
             var expenseController = new ExpenseController(userController.CurrentUser);
 
-            SecondaryMainMenu(userController.CurrentUser, incomeController, expenseController, userController);
+            MainMenu(userController.CurrentUser, incomeController, expenseController, userController);
 
 
             Console.WriteLine("До свидания " + userController.CurrentUser.Name);
@@ -42,7 +45,14 @@ namespace MLG_BudgetGuide.BL.Controller
 
         }
 
-        public void SecondaryMainMenu(User currentUser, 
+        /// <summary>
+        /// Главное меню.
+        /// </summary>
+        /// <param name="currentUser"></param>
+        /// <param name="incomeController"></param>
+        /// <param name="expenseController"></param>
+        /// <param name="userController"></param>
+        public void MainMenu(User currentUser, 
                                       IncomeController incomeController, 
                                       ExpenseController expenseController, 
                                       UserController userController)
@@ -52,7 +62,7 @@ namespace MLG_BudgetGuide.BL.Controller
             {
                 ResetMonthlyExpenseAndIncome(currentUser);
                 Console.Clear();
-                ListCommands(currentUser);
+                MenuCommands(currentUser);
                 int input;
                 if(int.TryParse(Console.ReadLine(), out int result))
                 {
@@ -66,7 +76,7 @@ namespace MLG_BudgetGuide.BL.Controller
                 {
                     case 1:
                         Console.Clear();
-                        TotalIncomeExpense(currentUser, incomeController, expenseController);
+                        TotalStatistics(currentUser, incomeController, expenseController);
                         userController.Save();
                         break;
 
@@ -125,26 +135,42 @@ namespace MLG_BudgetGuide.BL.Controller
             OutputHistory(currentUser.Income.History, "Доходы");
         }
 
+        /// <summary>
+        /// Добавить доход.
+        /// </summary>
+        /// <param name="incomeController"></param>
         private void AddIncome(IncomeController incomeController)
         {
-            int income;
             while (true)
             {
-                Console.WriteLine("Введите размер дохода.");
+                Console.Clear();
+                Console.WriteLine("Для выхода введите \"0\".");
+                Console.WriteLine("Введите размер дохода:");
                 if (int.TryParse(Console.ReadLine(), out int resultIncome))
                 {
-                    income = resultIncome;
-                    break;
+                    if (resultIncome == 0)
+                    {
+                        break;
+                    }
+                    else
+                    {
+                        incomeController.AddIncome(resultIncome);
+                        break;
+                    }
                 }
                 else
                 {
                     Console.WriteLine("Некорректный ввод");
                 }
             }
-            incomeController.AddIncome(income);
+            
         }
 
-        public void ListCommands(User currentUser)
+        /// <summary>
+        /// Список команд главного меню.
+        /// </summary>
+        /// <param name="currentUser"></param>
+        public void MenuCommands(User currentUser)
         {
             Console.WriteLine("Текущий пользователь - " + currentUser.Name);
             Console.WriteLine("1 - Сводка о доходах и расходах.");
@@ -158,7 +184,15 @@ namespace MLG_BudgetGuide.BL.Controller
             Console.WriteLine("0 - Выход.");
         }
 
-        public void TotalIncomeExpense(User currentUser, IncomeController incomeController, ExpenseController expenseController)
+        /// <summary>
+        /// Статистика за все время.
+        /// </summary>
+        /// <param name="currentUser"></param>
+        /// <param name="incomeController"></param>
+        /// <param name="expenseController"></param>
+        public void TotalStatistics(User currentUser, 
+                                    IncomeController incomeController, 
+                                    ExpenseController expenseController)
         {
             Console.Clear();
             Console.WriteLine($"Суммарных доход за все время - {currentUser.Income.TotalIncome}");
