@@ -14,10 +14,12 @@ namespace MLG_BudgetGuide.BL.Controller
 
         public ExpenseController(User currentUser)
         {
+
             if (!(currentUser is User))
             {
-                throw new ArgumentException("Неверный формат пользователя", nameof(currentUser));
+                throw new Exception("Неверный формат пользователя.");
             }
+            
             CurrentUser = currentUser;
         }
 
@@ -296,12 +298,17 @@ namespace MLG_BudgetGuide.BL.Controller
             while (true)
             {
                 Console.WriteLine("Введите номер типа, который хотите удалить:");
+                Console.WriteLine("0 - Выход.");
                 for (var i = 0; i < listOfExpenses.Count; i++)
                 {
                     Console.WriteLine($"{i + 1} - Расходы типа \"{listOfExpenses[i].Name}\"");
                 }
                 if (int.TryParse(Console.ReadLine(), out int input))
                 {
+                    if (input == 0)
+                    {
+                        break;
+                    }
                     if (input <= listOfExpenses.Count && input > 0)
                     {
                         listOfExpenses.RemoveAt(input - 1);
