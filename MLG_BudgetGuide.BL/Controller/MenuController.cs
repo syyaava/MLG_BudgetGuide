@@ -153,7 +153,7 @@ namespace MLG_BudgetGuide.BL.Controller
         {
             if (currentUser.Months.Count != 0)
             {
-                if (currentUser.Months.Last().Month != DateTime.Now.Month && currentUser.Months.Last().Year != DateTime.Now.Year)
+                if (currentUser.Months.Last().Month != DateTime.Now.Month)
                 {
                     currentUser.Months.Add(DateTime.Now);
                     currentUser.Income.CurrentMonthIncome = 0;
