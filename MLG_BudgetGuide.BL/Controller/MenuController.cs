@@ -108,6 +108,7 @@ namespace MLG_BudgetGuide.BL.Controller
 
                     case 0:
                         flag = false;
+                        Console.Clear();
                         userController.Save();
                         break;
 
